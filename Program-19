@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <ctype.h>
+
+bool isOperator(char ch) {
+    return ch == '+' || ch == '*' || ch == '(' || ch == ')';
+}
+
+int getPrecedence(char op) {
+    switch (op) {
+        case '+':
+            return 1;
+        case '*':
+            return 2;
+        case '(':
+            return 0;
+    }
+    return -1;
+}
+bool operatorPrecedenceParser(char input[]) {
+    int i = 0;
+    char stack[20];
+    int top = -1;
+    stack[++top] = '$';
+    char symbol = input[i++];
+
+    while (symbol != '\0') {
+        if (!isOperator(symbol)) {
+            printf("id\t%s\n", &symbol); 
+            symbol = input[i++];
+        } else {
+            char stackTop = stack[top];
+            int stackTopPrecedence = getPrecedence(stackTop);
+            int symbolPrecedence = getPrecedence(symbol);
+
+            if (stackTopPrecedence < symbolPrecedence) {
+                stack[++top] = symbol;
+                symbol = input[i++];
+            } else {
+                if (stackTop == '$' && symbol == '$') {
+                    printf("Accepted\n");
+                    return true;
+                } else if (stackTopPrecedence >= symbolPrecedence) {
+                    while (stackTopPrecedence >= symbolPrecedence) {
+                        switch (stackTop) {
+                            case '+':
+                                printf("reduce\tE -> E + T\n");
+                                break;
+                            case '*':
+                                printf("reduce\tT -> T * F\n");
+                                break;
+                            case '(':
+                                printf("reduce\tF -> ( E )\n");
+                                break;
+                        }
+                        top--;
+                        stackTop = stack[top];
+                        stackTopPrecedence = getPrecedence(stackTop);
+                    }
+                } else {
+                    printf("Rejected\n");
+                    return false;
+                }
+            }
+        }
+    }
+
+    printf("Rejected\n");
+    return false;
+}
+int main() {
+    char input[20];
+    printf("Enter the input string: ");
+    scanf("%s", input);
+    int i = 0;
+    while (input[i] != '\0') {
+        i++;
+    }
+    input[i] = '$';
+    input[i + 1] = '\0';
+    printf("\nParsing:\n");
+    operatorPrecedenceParser(input);
+    return 0;
+}
