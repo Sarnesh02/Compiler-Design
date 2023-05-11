@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void semanticAnalysis() {
+    printf("Performing semantic analysis...\n");
+}
+
+void intermediateCodeGeneration() {
+    printf("Performing intermediate code generation...\n");
+}
+
+void optimization() {
+    printf("Performing optimization...\n");
+}
+
+void codeGeneration() {
+    printf("Performing code generation...\n");
+}
+
+int main() {
+    printf("Compiler Back End\n");
+
+    semanticAnalysis();
+    intermediateCodeGeneration();
+    optimization();
+    codeGeneration();
+
+    printf("Back end completed.\n");
+
+    return 0;
+}
