@@ -1,0 +1,46 @@
+C SOURCE CODE:
+#define P 314  
+#include<stdio.h> #include<conio.h>
+ void main()
+{
+            int a,b,c = 30;
+printf("hello");
+}
+LEX CODE:
+
+digit [0-9]
+%{
+int cons=0;
+%}
+%%
+{digit}+ { cons++; printf("%s is a constant\n", yytext);  }
+.|\n { }
+%%
+int yywrap(void) {
+return 1; }
+int main(void)
+{
+FILE *f;
+char file[10];
+printf("Enter File Name : ");
+scanf("%s",file);
+f = fopen(file,"r");
+yyin = f;
+yylex();
+printf("Number of Constants : %d\n", cons);
+fclose(yyin);  
+}
+
+OUTPUT:
+
+C:\Users\SARNESH>cd Documents
+
+C:\Users\SARNESH\Documents>lex 222.l
+
+C:\Users\SARNESH\Documents>gcc -o 222 lex.yy.c
+
+C:\Users\SARNESH\Documents>222.exe 222.c
+Enter File Name : 222.c
+314 is a constant
+30 is a constant
+Number of Constants : 2
